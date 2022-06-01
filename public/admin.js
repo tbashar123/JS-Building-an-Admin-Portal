@@ -1,14 +1,14 @@
 // Your Code Here
-async function main() {
+async function main(url) {
 
-    let response = await fetch('http://localhost:3001/listBooks')
+    let response = await fetch(url)
 
     let books = await response.json()
 
-    books.forEach(renderBook)
+    books.forEach(updateBook)
 }
 
-function renderBook(book) {
+function updateBook(book) {
     let root = document.querySelector('#root')
 
     let li = document.createElement('li')
@@ -17,10 +17,10 @@ function renderBook(book) {
     let quantity = document.createElement('input')
     quantity.value = book.quantity
 
-    let saveButton = document.createElement('button')
-    saveButton.textContent = 'Save'
+    let Button = document.createElement('button')
+    Button.textContent = 'Save'
 
-    saveButton.addEventListener('click', () => {
+    Button.addEventListener('click', () => {
         fetch('http://localhost:3001/updateBook', {
             method: 'PATCH',
             headers: {
@@ -28,14 +28,14 @@ function renderBook(book) {
             },
             body: JSON.stringify({
                 id: book.id,
-                quantity: quantityInput.value
+                quantity: quantity.value
             })
         })
     })
 
-    li.append(quantity, saveButton)
+    li.append(quantity, Button)
 
     root.append(li)
 }
 
-main();
+main('http://localhost:3001/listBooks');
